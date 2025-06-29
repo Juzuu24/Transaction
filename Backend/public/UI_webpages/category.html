@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CATEGORY</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+     .dashboard-header {
+             display: flex;
+             justify-content: center;
+             /* margin-bottom: 20px; */
+             padding-top: 10px;
+             /* padding-top: 10px; */
+             padding-bottom: 30px;
+             /* position: fixed; */
+          
+        }
+        .search{
+           left: 20%;
+           border-radius: 20px;
+           
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: #f0eef4;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .search-container input {
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 5px;
+            width: 100%;
+        }
+        .search-container .fa-search {
+            color: gray;}
+        
+</style>
+<body>
+    <div class="navbar">
+        <div class="logo"><img src="../source/logo.png" alt="Logo" width="70" height="70"></div>
+        <div class="search-container mx-3">
+            <i class="fas fa-bars"></i>
+                <input type="text" placeholder="Search"><button>🔍</button>
+                <i class="fas fa-search"></i>
+        </div>
+        <div class="nav-icons">
+            <span><img src="../source/email_icon.png" alt="email_icon" width="40" height="30"></span>
+            <span><img src="../source/noti_icon.png" alt="noti_icon" width="40" height="auto"></span>
+        </div>
+    </div>
+
+    <div class="mobile-navbar">
+        <span class="menu-toggle" onclick="toggleSidebar()">☰ MENU</span>
+        <a href="#" class="log">LOG OUT</a>
+    </div>
+    
+    <div class="main-container">
+        <div class="sidebar" id="sidebar">
+            <span class="close-btn" onclick="toggleSidebar()">✖</span>
+        
+            <h2>MENU</h2>
+            <a href="dashboard.html">DASHBOARD</a>
+            <a href="category.html" class="active">CATEGORY</a>
+            <a href="products.html">PRODUCTS</a>
+            <a href="order.html">ORDER</a>
+            <a href="../logIn.html">LOG OUT</a>
+        </div>
+    
+        <div class="content">
+            <h2 class="dashboard-header">CATEGORY</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>CATEGORY_NAME</th>
+                        <th>QUANTITY</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Kids</td>
+                        <td>12</td>
+                        <div class="action">
+                            <td><a href="">Delete</a></td>
+                            <td> <a href="">Edit</a></td>
+                            </div>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Men</td>
+                        <td>12</td>
+                        <div class="action">
+                            <td><a href="">Delete</a></td>
+                            <td> <a href="">Edit</a></td>
+                            </div>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Sports</td>
+                        <td>12</td>
+                        <div class="action">
+                            <td><a href="">Delete</a></td>
+                            <td> <a href="">Edit</a></td>
+                            </div>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Unisex</td>
+                        <td>12</td>
+                        <div class="action">
+                            <td><a href="">Delete</a></td>
+                            <td> <a href="">Edit</a></td>
+                            </div>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Women</td>
+                        <td>12</td>
+                        <div class="action">
+                            <td><a href="">Delete</a></td>
+                            <td> <a href="">Edit</a></td>
+                            </div>
+                    </tr>
+                </tbody>
+            </table>
+         
+            
+            <div class="buttons">
+                <button id="addButton">Add</button>
+                <!-- <button>Delete</button>
+                <button>Edit</button> -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+        }
+        const addButton = document.getElementById('addButton');
+    
+        addButton.addEventListener('click', function() {
+            window.location.href = 'addCategory.html'; 
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

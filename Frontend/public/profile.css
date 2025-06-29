@@ -1,0 +1,200 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 20px;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.profile-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-right: 15px;
+}
+
+.user-info h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.vip-badge {
+    background: black;
+    color: yellow;
+    font-size: 0.7em;
+    padding: 2px 6px;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.score-bar {
+    display: inline-block;
+    width: 100px;
+    height: 8px;
+    background: #eee;
+    border-radius: 5px;
+    margin: 0 8px;
+    vertical-align: middle;
+}
+
+.score-bar .fill {
+    width: 100%;
+    height: 100%;
+    background: #90ee90;
+    border-radius: 5px;
+    display: block;
+}
+
+.wallet-section {
+    background: #1F3A54;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.wallet-balance {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.currency {
+    font-size: 0.5em;
+    margin-left: 5px;
+}
+
+.earnings-tabs {
+    margin-top: 15px;
+}
+
+.earnings-tabs button {
+    background: #c5ffcb;
+    border: none;
+    padding: 8px 15px;
+    margin-right: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.earnings-tabs button.active-tab {
+    background: #a6eeb1;
+}
+
+.earnings-details {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.earnings-details div p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.account-info, .account-settings {
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+
+    border: 1px solid #cce0ff;
+}
+
+.account-info h2,
+.account-settings h2 {
+    background-color: #e6f0ff; /* Light blue */
+    padding: 10px 15px;
+    border-left: 5px solid #3399ff; /* Accent bar */
+    border-radius: 4px;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+
+.card {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+    background-image: linear-gradient(to bottom, #fefeff, #f7faff);
+}
+
+.account-detail p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.transaction-history table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.transaction-history th, .transaction-history td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.transaction-history th {
+    background-color: #f1f1f1;
+}
+
+.transaction-history tr:hover {
+    background-color: #f9f9f9;
+}
+
+.account-settings ul {
+    list-style: none;
+}
+
+.account-settings li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.account-settings li a {
+    text-decoration: none;
+    color: #2c3e50;
+    font-size: 16px;
+}
+
+.account-settings li a:hover {
+    text-decoration: underline;
+}
+
+.back-button {
+    display: block;
+    width: fit-content;
+    margin: 30px auto 0;
+    padding: 12px 25px;
+    background-color: #1F3A54;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .back-button:hover {
+    background-color: #1c2e40;
+  }
+
+

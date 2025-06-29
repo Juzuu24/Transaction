@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="/loginStyle.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="top-banner">
+    <img src="/source/logo.png" alt="Logo" class="logo"> 
+    <span class="logo-text">CHAINX</span>
+  </div>
+
+  <div class="login-container">
+    <h2>SIGN IN</h2>
+    <form action="/login" method="POST">
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" name="username" placeholder="USERNAME" required>
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" placeholder="PASSWORD" required>
+      </div>
+
+      <button type="submit" class="login-btn">LOGIN</button>
+
+      <div class="form-footer">
+        <span>Don't have an account? <a href="/signup">Sign Up</a></span>
+        <a href="/forgot-password" class="forgot">Forgot password?</a>
+      </div>
+    </form>
+  </div>
+
+  <div class="bottom-banner">
+    <img src="/source/logo.png" alt="Logo" class="logo">
+    <p>TERMS AND CONDITIONS<br>ALL RIGHTS RESERVED</p>
+  </div>
+</body>
+</html>

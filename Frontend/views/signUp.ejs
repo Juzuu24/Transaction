@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account</title>
+  <link rel="stylesheet" href="/signupStyle.css">
+</head>
+<body>
+  <div class="top-banner">
+        <img src="/source/logo.png" alt="Logo" class="logo"> 
+        <span class="logo-text">CHAINX</span>
+  </div>
+  <div class="container">
+    <div class="form-box">
+      <h2>CREATE NEW ACCOUNT</h2>
+      <form action="/signup" method="POST">
+        <input type="text" name="username" placeholder="USER NAME" required>
+        <input type="tel" name="phone" placeholder="PHONE NUMBER" required>
+        <input type="email" name="email" placeholder="EMAIL" required>
+        <input type="password" name="password" placeholder="PASSWORD" required>
+        <input type="password" name="confirmPassword" placeholder="CONFIRM PASSWORD" required>
+        <button type="submit">CREATE</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

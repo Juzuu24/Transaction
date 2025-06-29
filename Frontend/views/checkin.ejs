@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Check-in</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    
+    .container {
+      max-width: 800px;
+      margin: 60px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #5a5a89;
+    }
+    .info {
+      background: #f0f5ff;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #d0d7ff;
+      margin-bottom: 25px;
+    }
+    .info p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    .reward-box {
+      background: #fff3cd;
+      color: #856404;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .checkin-btn {
+      padding: 15px 30px;
+      font-size: 16px;
+      color: #fff;
+      background: linear-gradient(145deg, #00c6ff, #0072ff);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0, 114, 255, 0.3);
+      transition: all 0.3s ease-in-out;
+    }
+    .checkin-btn:hover {
+      background: linear-gradient(145deg, #0072ff, #00c6ff);
+      box-shadow: 0 8px 20px rgba(0, 114, 255, 0.4);
+    }
+    .message {
+      margin-top: 25px;
+      font-weight: bold;
+      font-size: 16px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo"><img src="/source/logo.png" alt="Logo" class="logo"></div>
+        <div class="brand">CHAINX</div>
+        <div class="search-bar">
+          <i class="fas fa-bars"></i>
+          <input type="text" placeholder="Search">
+          <i class="fas fa-search"></i>
+        </div>
+        <i class="fas fa-bell notification-icon"></i>
+      </header>
+  <div class="container">
+    <h2>🎁 Daily Check-in</h2>
+
+    <div class="info">
+      <p>Welcome back! Check in every day to collect your rewards and increase your streak.</p>
+      <div class="reward-box">
+        ✅ Today's Reward: <span style="color:#000">$50</span>
+      </div>
+    </div>
+
+    <button class="checkin-btn" onclick="checkIn()">Check In Now</button>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    function checkIn() {
+      const messageDiv = document.getElementById("message");
+      const today = new Date().toLocaleDateString();
+      if (localStorage.getItem("lastCheckIn") === today) {
+        messageDiv.textContent = "You have already checked in today! Come back tomorrow.";
+        messageDiv.style.color = "#d9534f";
+      } else {
+        localStorage.setItem("lastCheckIn", today);
+        messageDiv.textContent = "Check-in successful! $50 has been added to your balance.";
+        messageDiv.style.color = "green";
+      }
+    }
+  </script>
+</body>
+</html>

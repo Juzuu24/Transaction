@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Transaction History</title>
+  <link rel="stylesheet" href="/transactions.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1 class="page-title">Transaction History</h1>
+
+    <form method="GET" action="/transactions" class="filter-bar">
+      <input type="text" name="search" placeholder="Search by ID or date..." value="<%= search %>"/>
+      <select name="type">
+        <option value="">All Types</option>
+        <option value="Withdraw" <%= type === 'Withdraw' ? 'selected' : '' %>>Withdraw</option>
+        <option value="Deposit"  <%= type === 'Deposit'  ? 'selected' : '' %>>Deposit</option>
+      </select>
+      <button type="submit" class="filter-btn">Search</button>
+    </form>
+
+    <section class="transaction-history">
+      <h2>Withdrawals</h2>
+      <% if (withdraws.length) { %>
+        <table class="transaction-table">
+          <thead><tr><th>Date</th><th>ID</th><th>Amount</th></tr></thead>
+          <tbody>
+            <% withdraws.forEach(txn => { %>
+              <tr>
+                <td><%= txn.date.toISOString().slice(0,19).replace('T',' ') %></td>
+                <td>#<%= txn.id %></td>
+                <td class="amount">−$<%= txn.amount.toFixed(2) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p>No withdrawals found.</p>
+      <% } %>
+
+      <h2>Deposits</h2>
+      <% if (deposits.length) { %>
+        <table class="transaction-table">
+          <thead><tr><th>Date</th><th>ID</th><th>Amount</th></tr></thead>
+          <tbody>
+            <% deposits.forEach(txn => { %>
+              <tr>
+                <td><%= txn.date.toISOString().slice(0,19).replace('T',' ') %></td>
+                <td>#<%= txn.id %></td>
+                <td class="amount">+$<%= txn.amount.toFixed(2) %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p>No deposits found.</p>
+      <% } %>
+    </section>
+
+    <a href="<%= dashboardUrl %>" class="back-button">⬅ Back to home</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: juzuu24
+      MYSQL_DATABASE: user
+    ports:
+      - "3307:3306"
+    networks:
+      - mynetwork
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./Backend  #  backend
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "4100:4100"
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: juzuu24
+      DB_NAME: user
+    networks:
+      - mynetwork
+    volumes:
+      - ./Backend:/app
+
+  frontend:
+    build:
+      context: ./Frontend  # front end
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - mynetwork
+    volumes:
+      - ./Frontend:/app
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  mysql_data:

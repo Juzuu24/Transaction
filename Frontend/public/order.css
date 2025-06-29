@@ -1,0 +1,175 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f6f9;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.profile-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin-right: 15px;
+}
+
+.user-info h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.vip-badge {
+    background: black;
+    color: yellow;
+    font-size: 0.7em;
+    padding: 2px 6px;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.score-bar {
+    display: inline-block;
+    width: 100px;
+    height: 8px;
+    background: #eee;
+    border-radius: 5px;
+    margin: 0 8px;
+    vertical-align: middle;
+}
+
+.score-bar .fill {
+    width: 100%;
+    height: 100%;
+    background: #90ee90;
+    border-radius: 5px;
+    display: block;
+}
+
+.wallet-section {
+    background: #1F3A54;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.wallet-balance {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.currency {
+    font-size: 0.5em;
+    margin-left: 5px;
+}
+
+.earnings-tabs {
+    margin-top: 15px;
+}
+
+.earnings-tabs button {
+    background: #c5ffcb;
+    border: none;
+    padding: 8px 15px;
+    margin-right: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.earnings-tabs button.active-tab {
+    background: #a6eeb1;
+}
+
+.earnings-details {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.earnings-details div p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.bottom-sections {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.box {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    flex: 1;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.icon {
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+.vip-card {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    margin: 0 20px 20px;
+}
+
+.comm {
+    background: #c5ffcb;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.start-btn {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.start-btn button {
+    background: #1F3A54;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1em;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.box-link {
+    text-decoration: none;
+    flex: 1;
+    margin: 5px;
+}
+
+.box-link .box {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: black;
+    transition: background 0.2s ease;
+}
+
+.box-link .box:hover {
+    background: #f0f0f0;
+    cursor: pointer;
+}

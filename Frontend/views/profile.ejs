@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="/profile.css">
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    /* Visual style for read-only fields */
+    input[readonly], input[disabled] {
+      background-color: #f0f0f0;
+      border: none;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+        <div class="logo"><img src="/source/logo.png" alt="Logo" class="logo"></div>
+        <div class="brand">CHAINX</div>
+        <div class="search-bar">
+          <i class="fas fa-bars"></i>
+          <input type="text" placeholder="Search">
+          <i class="fas fa-search"></i>
+        </div>
+        <i class="fas fa-bell notification-icon"></i>
+      </header>
+  <div class="container">
+
+    <div class="profile-section">
+        <img class="profile-img" src="/source/profile.png" alt="Profile">
+        <div class="user-info">
+            <h2>$<%= username %> <span class="vip-badge">VIP1</span></h2>
+            <p>Credit Score: <span class="score-bar"><span class="fill"></span></span> <b>100%</b></p>
+        </div>
+    </div>
+
+    <div class="wallet-section">
+        <h3>Wallet Account</h3>
+        <div class="wallet-balance">
+            <span class="amount"><strong>Current Balance:</strong> $<%= balance %> </span>
+            
+        </div>
+
+        <div class="earnings-tabs">
+            <button class="active-tab">Todays Earnings</button>
+            <button>Total Earnings</button>
+        </div>
+
+        <div class="earnings-details">
+            <div>
+                <p>Order Revenue</p>
+                <strong>0</strong>
+            </div>
+            <div>
+                <p>Total Earnings</p>
+                <strong>0</strong>
+            </div>
+        </div>
+    </div>
+
+    <section class="account-info">
+      <h2>Account Information</h2>
+      <div class="account-detail">
+        <p>
+          <strong>Email:</strong>
+          <input type="email" value="<%= email %>" readonly>
+        </p>
+        <p>
+          <strong>Phone Number:</strong>
+          <input type="tel" value="<%= phone_number %>" readonly>
+        </p>
+        <p><strong>Account Balance:</strong> $<%= balance %></p>
+        <p>
+          <strong>Invitation Code:</strong>
+          <input type="text" readonly value="<%= inviteCode %>">
+        </p>
+      </div>
+      <!-- Optional: Add an "Edit" button next to the section header if you want to enable editing -->
+    </section>
+
+    <a href="<%= dashboardUrl %>" class="back-button">⬅ Back to home</a>
+  </div>
+</body>
+</html>

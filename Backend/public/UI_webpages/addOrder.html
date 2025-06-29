@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Order</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* body {
+            padding: 20px;
+        } */
+        .dashboard-header {
+             display: flex;
+             justify-content: center;
+             /* margin-bottom: 20px; */
+             padding-top: 10px;
+             /* padding-top: 10px; */
+             padding-bottom: 30px;
+             /* position: fixed; */
+          
+        }
+        /* body {
+            padding: 20px;
+        } */
+        .search{
+           left: 20%;
+           border-radius: 20px;
+           
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: #f0eef4;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .search-container input {
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 5px;
+            width: 100%;
+        }
+        .search-container .fa-search {
+            color: gray;}
+        .form-control{
+            width: 80%; /* Adjust width */
+            max-width: 300px; /* Limit max size */
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo"><img src="../source/logo.png" alt="Logo" width="70" height="70"></div>
+            <div class="search-container mx-3">
+                <i class="fas fa-bars"></i>
+                <input type="text" placeholder="Search"><button>🔍</button>
+                <i class="fas fa-search"></i>
+            </div>
+        
+        <div class="nav-icons">
+            <span><img src="../source/email_icon.png" alt="email_icon" width="20" height="25"></span>
+            <span><img src="../source/noti_icon.png" alt="noti_icon" width="20" height="25"></span>
+        </div>
+    </div>
+    
+    <div class="mobile-navbar">
+        <span class="menu-toggle" onclick="toggleSidebar()">☰ MENU</span>
+        <a href="#" class="log">LOG OUT</a>
+    </div>
+    
+    
+    <div class="main-container">
+        <div class="sidebar" id="sidebar">
+            <span class="close-btn" onclick="toggleSidebar()">✖</span>
+            <h2>MENU</h2>
+            <a href="#" class="active">DASHBOARD</a>
+            <a href="category.html">CATEGORY</a>
+            <a href="products.html">PRODUCTS</a>
+            <a href="order.html">ORDER</a>
+            <a href="../logIn.html">LOG OUT</a>
+            
+        </div>
+    
+        <div class="content">
+    
+        <h2>Add New Order</h2>
+        <form id="addOrderForm">
+            <div class="mb-3">
+                <label for="orderId" class="form-label">Order ID</label>
+                <input type="number" class="form-control" id="orderId" required>
+            </div>
+            <div class="mb-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="datetime-local" class="form-control" id="date" required>
+            </div>
+            <div class="mb-3">
+                <label for="customer" class="form-label">Customer Name</label>
+                <input type="text" class="form-control" id="customer" required>
+            </div>
+            <div class="mb-3">
+                <label for="total" class="form-label">Total Amount</label>
+                <input type="number" class="form-control" id="total" required>
+            </div>
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity</label>
+                <input type="number" class="form-control" id="quantity" required>
+            </div>
+            <div class="mb-3">
+                <label for="orderStatus" class="form-label">Order Status</label>
+                <select id="orderStatus" class="form-control" required>
+                    <option value="">Select Status</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Canceled">Canceled</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Processed">Processed</option>
+                    <option value="In Transit">In Transit</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Order</button>
+            <a href="order.html" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        function toggleSidebar() {
+            var sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+        }
+        document.getElementById('addOrderForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const orderId = document.getElementById('orderId').value;
+            const date = document.getElementById('date').value;
+            const customer = document.getElementById('customer').value;
+            const total = document.getElementById('total').value;
+            const quantity = document.getElementById('quantity').value;
+            const orderStatus = document.getElementById('orderStatus').value;
+
+            console.log({
+                orderId,
+                date,
+                customer,
+                total,
+                quantity,
+                orderStatus
+            });
+
+            window.location.href = 'order.html';
+        });
+    </script>
+</body>
+</html>
