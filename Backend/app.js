@@ -12,8 +12,13 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const sessionStore = new MySQLStore({
+    host: 'db',
+    port: 3306,
+    user: 'root',
+    password: 'juzuu24',
+    database: 'user',
     expiration: 1000 * 60 * 60 * 2,
-    createDatabaseTable: true, 
+    createDatabaseTable: true,
     schema: {
         tableName: "sessions",
         columnNames: {
@@ -22,7 +27,8 @@ const sessionStore = new MySQLStore({
             data: "data"
         }
     }
-}, db); 
+});
+
 
 app.use(session({
     key: "session_cookie_name",
