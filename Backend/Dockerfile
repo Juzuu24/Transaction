@@ -1,23 +1,24 @@
-
 FROM node:18-alpine
-
 
 WORKDIR /app
 
-# copy file package.json & package-lock.json
+# Copy package files and install dependencies
 COPY package*.json ./
-
-# install Dependencies
 RUN npm install
 
-# copy all code into Container
+# Copy all source code
 COPY . .
 
-# install nodemon 
+# Install nodemon globally
 RUN npm install -g nodemon
 
-# open port 4000
+# Download wait-for-it.sh script and make executable
+RUN apk add --no-cache curl && \
+    curl -o wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && \
+    chmod +x wait-for-it.sh
+
+# Expose the port backend listens on
 EXPOSE 4100
 
-# Run app by nodemon (If want to run default use  `node login.js`)
-CMD ["npx", "nodemon", "login.js"]
+# Use wait-for-it to wait for db:3306 before starting nodemon on login.js
+CMD ["./wait-for-it.sh", "db:3306", "--", "npx", "nodemon", "login.js"]
