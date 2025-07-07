@@ -21,4 +21,4 @@ RUN apk add --no-cache curl && \
 EXPOSE 4100
 
 # Use wait-for-it to wait for db:3306 before starting nodemon on login.js
-CMD ["./wait-for-it.sh", "db:3306", "--", "npx", "nodemon", "login.js"]
+CMD ["./wait-for-it.sh", "db:3306", "--", "npx", "nodemon", "app.js"]
