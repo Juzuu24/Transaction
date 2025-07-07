@@ -23,7 +23,7 @@ services:
       - "4100:4100"
     environment:
       DB_HOST: db
-      DB_port: 3306
+      DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: juzuu24
       DB_NAME: user
