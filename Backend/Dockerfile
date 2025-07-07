@@ -17,7 +17,7 @@ COPY . .
 RUN npm install -g nodemon
 
 # open port 4000
-EXPOSE 4000
+EXPOSE 4100
 
 # Run app by nodemon (If want to run default use  `node login.js`)
 CMD ["npx", "nodemon", "login.js"]

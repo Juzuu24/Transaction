@@ -1,3 +1,4 @@
+require("dotenv").config(); // <-- Load .env if needed
 const express = require("express");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
@@ -8,16 +9,19 @@ const db = require("./utils/database");
 const qbRoutes = require("./routes/qb");
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
+// MySQL session store config using env
 const sessionStore = new MySQLStore({
-    host: 'db',
-    port: 3306,
-    user: 'root',
-    password: 'juzuu24',
-    database: 'user',
-    expiration: 1000 * 60 * 60 * 2,
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306,
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || '',
+    expiration: 1000 * 60 * 60 * 2, // 2 hours
     createDatabaseTable: true,
     schema: {
         tableName: "sessions",
@@ -29,24 +33,28 @@ const sessionStore = new MySQLStore({
     }
 });
 
-
+// Session setup
 app.use(session({
     key: "session_cookie_name",
-    secret: "f4a9b8c6e3d1a5f9c3b2d4e8f6a7c9b1d3e5f8a4b2c6e9d7",
-    store: sessionStore, // 
+    secret: "f4a9b8c6e3d1a5f9c3b2d4e8f6a7c9b1d3e5f8a4b2c6e9d7", // use .env for production
+    store: sessionStore,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 1000 * 60 * 60 * 2 } // 
+    cookie: {
+        secure: false,
+        maxAge: 1000 * 60 * 60 * 2 // 2 hours
+    }
 }));
 
-// 🔹 Serve Static Files
+// Serve static files
 app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/product", express.static("public/product"));
 
+// Set EJS
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// 🔹 Middleware
+// Authentication middleware
 const authMiddleware = (req, res, next) => {
     if (!req.session.user) {
         return res.redirect("/");
@@ -54,11 +62,10 @@ const authMiddleware = (req, res, next) => {
     next();
 };
 
-
+// Routes
 app.get("/", (req, res) => {
     res.render("logIn", { title: "Login for Admin", errorMessage: "" });
 });
-
 
 app.get("/dashboard", authMiddleware, (req, res) => {
     res.render("dashboard", { title: "Dashboard", user: req.session.user });
@@ -84,7 +91,6 @@ app.post("/login", (req, res) => {
             return res.status(401).json({ message: "Username or password is incorrect" });
         }
 
-        // 🔹 Save User Session
         req.session.user = {
             id: results[0].id,
             username: results[0].username,
@@ -92,14 +98,11 @@ app.post("/login", (req, res) => {
         };
 
         console.log("Login Success:", req.session.user);
-
-        // 🔹 Redirect after login
         res.json({ message: "Login successful", redirect: "/dashboard" });
     });
 });
 
-
-app.post("/api/add-admin",(req, res) => {
+app.post("/api/add-admin", (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
@@ -116,7 +119,6 @@ app.post("/api/add-admin",(req, res) => {
     });
 });
 
-// 🔹 Logout API
 app.get("/logout", (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -126,12 +128,13 @@ app.get("/logout", (req, res) => {
     });
 });
 
-// 🔹 404 Page
+// 404
 app.use((req, res) => {
     res.status(404).render("404", { title: "404 Not Found" });
 });
 
-// 🔹 Start Server
-app.listen(4100, () => {
-    console.log("Server running on http://localhost:4000");
+// Start server
+const PORT = process.env.PORT || 4100;
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
