@@ -230,4 +230,97 @@ Router.get("/deposits/delete/:deposit_id", (req, res) => {
   });
 });
 
+///Lucky Order
+// View all settings
+Router.get('/order', (req, res) => {
+  mysqlConnection.query(`
+    SELECT us.*, s.username
+    FROM user_settings us
+    JOIN signUp s ON us.user_id = s.id
+  `, (err, results) => {
+    if (!err) {
+      res.render('order', { title: 'User Settings', settings: results });
+    } else {
+      console.error(err);
+      res.status(500).send('Error loading settings');
+    }
+  });
+});
+
+// Show add form
+Router.get('/order/add', (req, res) => {
+  mysqlConnection.query(`SELECT id, username FROM signUp`, (err, users) => {
+    if (!err) {
+      res.render('addOrder', { title: 'Add Setting', users });
+    } else {
+      res.status(500).send('Error loading users');
+    }
+  });
+});
+
+// Add setting
+Router.post('/order/add', (req, res) => {
+  const { user_id, lucky_frequency, lucky_daily_limit } = req.body;
+  const sql = `
+    INSERT INTO user_settings (user_id, lucky_frequency, lucky_daily_limit)
+    VALUES (?, ?, ?)
+  `;
+  mysqlConnection.query(sql, [user_id, lucky_frequency, lucky_daily_limit], (err) => {
+    if (!err) {
+      res.redirect('/order');
+    } else {
+      console.error(err);
+      res.status(500).send('Error adding setting');
+    }
+  });
+});
+
+// Edit form
+Router.get('/order/edit/:id', (req, res) => {
+  const id = req.params.id;
+  mysqlConnection.query(`SELECT * FROM user_settings WHERE id = ?`, [id], (err, settingResult) => {
+    if (err || settingResult.length === 0) return res.status(404).send('Setting not found');
+    mysqlConnection.query(`SELECT id, username FROM signUp`, (err2, users) => {
+      if (!err2) {
+        res.render('editOrder', { title: 'Edit Setting', setting: settingResult[0], users });
+      } else {
+        res.status(500).send('Error loading users');
+      }
+    });
+  });
+});
+
+// Update
+Router.post('/order/edit/:id', (req, res) => {
+  const { user_id, lucky_frequency, lucky_daily_limit } = req.body;
+  const id = req.params.id;
+  const sql = `
+    UPDATE user_settings
+    SET user_id = ?, lucky_frequency = ?, lucky_daily_limit = ?
+    WHERE id = ?
+  `;
+  mysqlConnection.query(sql, [user_id, lucky_frequency, lucky_daily_limit, id], (err) => {
+    if (!err) {
+      res.redirect('/order');
+    } else {
+      console.error(err);
+      res.status(500).send('Error updating setting');
+    }
+  });
+});
+
+// Delete
+Router.post('/order/delete/:id', (req, res) => {
+  const id = req.params.id;
+  mysqlConnection.query(`DELETE FROM user_settings WHERE id = ?`, [id], (err) => {
+    if (!err) {
+      res.redirect('/order');
+    } else {
+      console.error(err);
+      res.status(500).send('Error deleting setting');
+    }
+  });
+});
+
+
 module.exports = Router;
