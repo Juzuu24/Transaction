@@ -126,7 +126,7 @@ app.get("/dashboard", requireAuth, async (req, res) => {
     try {
         console.log('Accessing dashboard with session:', req.session);
 
-        const [userResult] = await db.execute('SELECT balance FROM signUp WHERE id = ?', [req.session.userId]);
+        const [userResult] = await db.execute('SELECT balance FROM signup WHERE id = ?', [req.session.userId]);
 
         if (userResult.length === 0) {
             console.log(`User with ID ${req.session.userId} not found.`);
@@ -194,7 +194,7 @@ app.get("/deposit", requireAuth, async (req, res) => {
     try {
         console.log('Accessing deposit with session:', req.session);
 
-        const [results] = await db.execute('SELECT balance FROM signUp WHERE id = ?', [req.session.userId]);
+        const [results] = await db.execute('SELECT balance FROM signup WHERE id = ?', [req.session.userId]);
 
         if (results.length === 0) {
             console.log(`User with ID ${req.session.userId} not found.`);
@@ -222,7 +222,7 @@ app.post("/deposit", requireAuth, async (req, res) => {
         );
 
         const [updateResult] = await db.execute(
-            'UPDATE signUp SET balance = balance + ? WHERE id = ?',
+            'UPDATE signup SET balance = balance + ? WHERE id = ?',
             [amount, req.session.userId]
         );
 
@@ -243,7 +243,7 @@ app.get("/withdraw", requireAuth, async (req, res) => {
     try {
         console.log('Accessing withdraw with session:', req.session);
 
-        const [results] = await db.execute('SELECT balance FROM signUp WHERE id = ?', [req.session.userId]);
+        const [results] = await db.execute('SELECT balance FROM signup WHERE id = ?', [req.session.userId]);
 
         if (results.length === 0) {
             console.log(`User with ID ${req.session.userId} not found.`);
@@ -271,7 +271,7 @@ app.post("/withdraw", requireAuth, async (req, res) => {
         );
 
         const [updateResult] = await db.execute(
-            'UPDATE signUp SET balance = balance - ? WHERE id = ?',
+            'UPDATE signup SET balance = balance - ? WHERE id = ?',
             [amount, req.session.userId]
         );
 
@@ -365,7 +365,7 @@ app.get("/order", requireAuth, async (req, res) => {
     try {
         console.log('Accessing withdraw with session:', req.session);
 
-        const [results] = await db.execute('SELECT username,balance FROM signUp WHERE id = ?', [req.session.userId]);
+        const [results] = await db.execute('SELECT username,balance FROM signup WHERE id = ?', [req.session.userId]);
         
 
         if (results.length === 0) {
@@ -450,7 +450,7 @@ app.post('/order', async (req, res) => {
     console.log(`💸 Profit Earned: ${profit}`);
     console.log(`🧾 New Balance: ${updatedBalance}`);
 
-    await db.query('UPDATE signUp SET balance = ? WHERE id = ?', [updatedBalance, userId]);
+    await db.query('UPDATE signup SET balance = ? WHERE id = ?', [updatedBalance, userId]);
     await db.query('INSERT INTO start_actions (id, isLucky) VALUES (?, ?)', [userId, isLucky ? 1 : 0]);
 
     res.json({
@@ -500,7 +500,7 @@ app.get("/profile", requireAuth, async (req, res) => {
     console.log('Accessing profile with session:', req.session);
 
     const [results] = await db.execute(
-      'SELECT username,balance, email, phone_number FROM signUp WHERE id = ?',
+      'SELECT username,balance, email, phone_number FROM signup WHERE id = ?',
       [req.session.userId]
     );
 
