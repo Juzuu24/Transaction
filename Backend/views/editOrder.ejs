@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><title>Edit Setting</title></head>
+<body>
+  <h1>Edit User Setting</h1>
+  <form method="POST" action="/order/edit/<%= setting.id %>">
+    <label>User:</label>
+    <select name="user_id" required>
+      <% users.forEach(user => { %>
+        <option value="<%= user.id %>" <%= setting.user_id === user.id ? 'selected' : '' %>><%= user.username %></option>
+      <% }) %>
+    </select><br/>
+    <label>Lucky Frequency:</label>
+    <input type="number" name="lucky_frequency" value="<%= setting.lucky_frequency %>" required><br/>
+    <label>Lucky Daily Limit:</label>
+    <input type="number" name="lucky_daily_limit" value="<%= setting.lucky_daily_limit %>" required><br/>
+    <button type="submit">Update</button>
+  </form>
+  <a href="/order">⬅ Back</a>
+</body>
+</html>

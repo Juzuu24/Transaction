@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><title>User Settings</title></head>
+<body>
+  <h1>User Settings</h1>
+  <a href="/order/add">➕ Add New Setting</a>
+  <table border="1" cellpadding="8">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Frequency</th>
+        <th>Daily Limit</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% settings.forEach(setting => { %>
+        <tr>
+          <td><%= setting.id %></td>
+          <td><%= setting.username %></td>
+          <td><%= setting.lucky_frequency %></td>
+          <td><%= setting.lucky_daily_limit %></td>
+          <td>
+            <a href="/order/edit/<%= setting.id %>">✏️ Edit</a>
+            <form method="POST" action="/order/delete/<%= setting.id %>" style="display:inline;">
+              <button type="submit" onclick="return confirm('Delete this?')">🗑️ Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</body>
+</html>

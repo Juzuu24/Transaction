@@ -46,15 +46,14 @@ app.use(session({
     }
 }));
 
-// Serve static files
+// 🔹 Serve Static Files
 app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/product", express.static("public/product"));
 
-// Set EJS
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// Authentication middleware
+// 🔹 Middleware
 const authMiddleware = (req, res, next) => {
     if (!req.session.user) {
         return res.redirect("/");
@@ -62,14 +61,16 @@ const authMiddleware = (req, res, next) => {
     next();
 };
 
-// Routes
+
 app.get("/", (req, res) => {
     res.render("logIn", { title: "Login for Admin", errorMessage: "" });
 });
 
+
 app.get("/dashboard", authMiddleware, (req, res) => {
     res.render("dashboard", { title: "Dashboard", user: req.session.user });
 });
+
 
 app.get("/add-admin", (req, res) => {
     res.render("addAdmin", { title: "Add New Admin", errorMessage: "" });
@@ -91,6 +92,7 @@ app.post("/login", (req, res) => {
             return res.status(401).json({ message: "Username or password is incorrect" });
         }
 
+        // 🔹 Save User Session
         req.session.user = {
             id: results[0].id,
             username: results[0].username,
@@ -98,11 +100,14 @@ app.post("/login", (req, res) => {
         };
 
         console.log("Login Success:", req.session.user);
+
+        // 🔹 Redirect after login
         res.json({ message: "Login successful", redirect: "/dashboard" });
     });
 });
 
-app.post("/api/add-admin", (req, res) => {
+
+app.post("/api/add-admin",(req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
@@ -119,6 +124,7 @@ app.post("/api/add-admin", (req, res) => {
     });
 });
 
+// 🔹 Logout API
 app.get("/logout", (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -128,13 +134,12 @@ app.get("/logout", (req, res) => {
     });
 });
 
-// 404
+// 🔹 404 Page
 app.use((req, res) => {
     res.status(404).render("404", { title: "404 Not Found" });
 });
 
-// Start server
-const PORT = process.env.PORT || 4100;
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+// 🔹 Start Server
+app.listen(4100, () => {
+    console.log("Server running on http://localhost:4000");
 });
