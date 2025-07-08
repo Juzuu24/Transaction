@@ -3,10 +3,13 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const session = require("express-session");
+const Authen = require("./control/authen");
 const MySQLStore = require("express-mysql-session")(session);
 const { db } = require("./utils/database"); // Assuming you export 'db' directly
 const { dbConfig } = require("./utils/database");
 const mysql = require('mysql2/promise');
+const bcrypt = require('bcrypt');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -99,33 +102,25 @@ app.get("/", (req, res) => {
     res.render("login", { error: null });
 });
 
+
 app.post("/login", async (req, res) => {
     try {
         const { username, password } = req.body;
+        const loginResult = await Authen.userLogin(req, res, username, password);
 
-        // Replace with your actual authentication logic (consider using bcrypt for password hashing)
-        if (username === 'ALVIN' && password === '1234') {
-            req.session.regenerate((err) => {
-                if (err) {
-                    console.error('Session regeneration error:', err);
-                    return res.status(500).render('login', { error: 'Login failed during session start' });
-                }
-
-                req.session.authenticated = true;
-                req.session.userId = 2;
-                req.session.username = username;
-
-                console.log('New session created:', req.session);
-                return res.redirect('/dashboard');
-            });
+        if (loginResult) {
+            res.redirect("/dashboard");
         } else {
-            return res.render('login', { error: 'Invalid credentials' });
+            res.render('login', { title: 'Login', errorMessage: 'Invalid username or password' });
         }
+
     } catch (error) {
-        console.error('Login error:', error);
-        return res.status(500).render('login', { error: 'Login failed due to server error' });
+        console.error("Login error:", error);
+        res.status(500).render('login', { title: 'Login', errorMessage: 'An error occurred during login.' });
     }
 });
+
+
 
 app.get("/dashboard", requireAuth, async (req, res) => {
     try {
@@ -170,19 +165,27 @@ app.get('/signup', (req, res) => {
   });
 
 // POST route to handle signup form submission
-app.post('/signup', (req, res) => {
-  const { username, phone, email, password, confirmPassword } = req.body;
+app.post('/signup', async (req, res) => {
+  const { username, phone_number, email, password, confirmPassword } = req.body;
 
-  // Basic validation (you can add more checks)
   if (password !== confirmPassword) {
     return res.send('Passwords do not match.');
   }
 
-  // Simulate saving to DB
-  console.log('User signed up:', { username, phone, email });
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Redirect or show success message
-  res.send('Account created successfully!');
+    // Insert user into DB
+    await db.execute(
+      'INSERT INTO signup (username, phone_number, email, password_hash) VALUES (?, ?, ?, ?)',
+      [username, phone_number, email, hashedPassword]
+    );
+
+    res.redirect('/');
+  } catch (error) {
+    console.error('Error inserting user:', error);
+    res.status(500).send('An error occurred while creating the account.');
+  }
 });
 
   
@@ -387,41 +390,73 @@ app.post('/order', async (req, res) => {
     const userId = req.session.userId;
     if (!userId) return res.status(401).json({ message: 'Not logged in' });
 
-    // ✅ Count today's actions correctly
-    const [countResult] = await db.query(`
-      SELECT COUNT(*) AS count FROM start_actions 
-      WHERE id = ? AND DATE(action_time) = CURDATE()
-    `, [userId]);
+    console.log('🟡 Incoming order from user ID:', userId);
 
-    const countToday = countResult[0].count;
+    const [[{ count: countToday }]] = await db.query(
+      `SELECT COUNT(*) AS count
+       FROM start_actions
+       WHERE id = ? AND DATE(action_time) = CURDATE()`,
+      [userId]
+    );
+    console.log('🔢 Orders today:', countToday);
 
     if (countToday >= 50) {
       return res.status(403).json({ message: 'Daily limit reached (50/50)' });
     }
 
-    // ✅ Get user balance
-    const [userResult] = await db.query('SELECT balance FROM signUp WHERE id = ?', [userId]);
-    if (!userResult.length) return res.status(404).json({ message: 'User not found' });
+    const [settingsRows] = await db.query(
+    `SELECT lucky_frequency, lucky_daily_limit
+     FROM user_settings
+     WHERE user_id = ?`, // Filter by the specific user's ID
+    [userId] // Pass the userId as a parameter for the prepared statement
+);
+    const settingsMap = Object.fromEntries(settingsRows.map(r => [r.key_name, r.val]));
+    const luckyFrequency = settingsMap.lucky_frequency ?? 5;
+    const luckyDailyLimit = settingsMap.lucky_daily_limit ?? 10;
+    console.log('📌 Lucky Frequency:', luckyFrequency);
+    console.log('📌 Lucky Daily Limit:', luckyDailyLimit);
 
-    const currentBalance = parseFloat(userResult[0].balance);
-    let profit = currentBalance * 0.05;
+    const [[{ todayLuckyCount }]] = await db.query(
+      `SELECT COUNT(*) AS todayLuckyCount
+       FROM start_actions
+       WHERE id = ? AND isLucky = 1 AND DATE(action_time) = CURDATE()`,
+      [userId]
+    );
+    console.log('🍀 Today\'s Lucky Orders:', todayLuckyCount);
 
-    // ✅ Deterministic lucky order: every 5th action
-    const isLucky = ((countToday + 1) % 5 === 0);
-    if (isLucky) {
-      profit *= 10;
+    const isLucky = (countToday + 1) % luckyFrequency === 0 &&
+                    todayLuckyCount < luckyDailyLimit;
+    console.log(`🎯 Order #${countToday + 1} → Lucky? ${isLucky}`);
+
+    // ─── NEW PROFIT LOGIC ───────────────────────────────────────────────
+    function getRandomProfit(min = 5, max = 500) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    let profit = getRandomProfit(5, 500);
+    if (isLucky) {
+      profit *= 2; // Optionally double lucky profit
+    }
+    // ────────────────────────────────────────────────────────────────────
+
+    const [[{ balance: currentBalanceStr }]] = await db.query(
+      'SELECT balance FROM signUp WHERE id = ?',
+      [userId]
+    );
+    const currentBalance = parseFloat(currentBalanceStr);
     const updatedBalance = currentBalance + profit;
 
-    // ✅ Update balance and log action
+    console.log(`💰 Current Balance: ${currentBalance}`);
+    console.log(`💸 Profit Earned: ${profit}`);
+    console.log(`🧾 New Balance: ${updatedBalance}`);
+
     await db.query('UPDATE signUp SET balance = ? WHERE id = ?', [updatedBalance, userId]);
-    await db.query('INSERT INTO start_actions (id) VALUES (?)', [userId]);
+    await db.query('INSERT INTO start_actions (id, isLucky) VALUES (?, ?)', [userId, isLucky ? 1 : 0]);
 
     res.json({
       message: isLucky
-        ? `🎉 Lucky Order! (Every 5th click) You earned 10x profit.`
-        : `Order successful.`,
+        ? `🎉 Lucky Order! You earned $${profit}!`
+        : `Order successful. You earned $${profit}.`,
       profit: profit.toFixed(2),
       updatedBalance: updatedBalance.toFixed(2),
       isLucky,
@@ -429,7 +464,7 @@ app.post('/order', async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Error in /order:', err);
+    console.error('❌ Error in /order:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
